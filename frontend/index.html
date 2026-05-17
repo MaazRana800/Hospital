@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediConnect - Pakistan's Smart Healthcare Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0ea5e9; --primary-dark: #0284c7; --primary-light: #38bdf8;
+            --secondary: #8b5cf6; --accent: #f59e0b; --success: #10b981; --danger: #ef4444;
+            --bg: #0f172a; --bg-card: #1e293b; --bg-hover: #334155; --bg-light: #f8fafc;
+            --text: #f1f5f9; --text-muted: #94a3b8; --text-dark: #1e293b;
+            --border: #334155; --border-light: #e2e8f0;
+            --gradient-primary: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            --gradient-warm: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3); --shadow: 0 4px 6px -1px rgba(0,0,0,0.4);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.5); --shadow-glow: 0 0 20px rgba(14,165,233,0.3);
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(14,165,233,0.3); } 50% { box-shadow: 0 0 40px rgba(14,165,233,0.6); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } 70% { transform: scale(1); } }
+        .animate-fadeInUp { animation: fadeInUp 0.6s ease forwards; }
+        .animate-delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .animate-delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .animate-delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); padding: 0.75rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: all 0.3s;
+        }
+        .navbar.scrolled { padding: 0.5rem 2rem; box-shadow: var(--shadow-lg); }
+        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+        .logo-icon {
+            width: 42px; height: 42px; background: var(--gradient-primary);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem; color: white; box-shadow: var(--shadow-glow);
+        }
+        .logo-text { font-size: 1.5rem; font-weight: 800; background: var(--gradient-primary); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+        .nav-link {
+            padding: 0.5rem 1rem; border-radius: 8px; color: var(--text-muted);
+            text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.2s;
+            cursor: pointer; border: none; background: none;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--text); background: var(--bg-hover); }
+        .nav-cta {
+            padding: 0.625rem 1.5rem; background: var(--gradient-primary); color: white;
+            border: none; border-radius: 10px; font-weight: 600; font-size: 0.875rem;
+            cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+        .emergency-btn {
+            padding: 0.625rem 1.25rem; background: var(--gradient-warm); color: white;
+            border: none; border-radius: 10px; font-weight: 600; font-size: 0.875rem;
+            cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+            animation: heartbeat 2s infinite;
+        }
+        .emergency-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(239,68,68,0.4); }
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; padding: 8rem 2rem 4rem;
+            position: relative; overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; inset: 0; z-index: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(14,165,233,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(16,185,129,0.08) 0%, transparent 50%);
+        }
+        .hero-grid { position: absolute; inset: 0; opacity: 0.03; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 60px 60px; }
+        .hero-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1rem; background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.3);
+            border-radius: 9999px; font-size: 0.875rem; color: var(--primary-light); margin-bottom: 1.5rem;
+        }
+        .hero-badge .pulse-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse-glow 2s infinite; }
+        .hero-title { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+        .hero-title span { background: var(--gradient-primary); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-desc { font-size: 1.125rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 540px; }
+        .hero-stats { display: flex; gap: 2rem; margin-bottom: 2.5rem; }
+        .hero-stat { text-align: center; }
+        .hero-stat-value { font-size: 1.75rem; font-weight: 700; color: var(--primary-light); }
+        .hero-stat-label { font-size: 0.8rem; color: var(--text-muted); }
+        .hero-cta-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary {
+            padding: 1rem 2rem; background: var(--gradient-primary); color: white; border: none;
+            border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer;
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.75rem;
+            text-decoration: none;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: var(--shadow-glow); }
+        .btn-secondary {
+            padding: 1rem 2rem; background: transparent; color: var(--text); border: 2px solid var(--border);
+            border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer;
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.75rem;
+        }
+        .btn-secondary:hover { border-color: var(--primary); background: rgba(14,165,233,0.1); }
+
+        /* Hero Visual */
+        .hero-visual { position: relative; }
+        .hero-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+            padding: 1.5rem; box-shadow: var(--shadow-lg); animation: float 6s ease infinite;
+        }
+        .hero-card-1 { position: relative; z-index: 2; }
+        .hero-card-2 { position: absolute; top: -20px; right: -30px; z-index: 1; opacity: 0.7; transform: scale(0.9); animation: float 6s ease infinite 1s; }
+        .hero-card-3 { position: absolute; bottom: -30px; left: -20px; z-index: 1; opacity: 0.6; transform: scale(0.85); animation: float 6s ease infinite 2s; }
+        .doctor-card { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg); border-radius: 12px; margin-bottom: 0.75rem; }
+        .doctor-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+        .doctor-info { flex: 1; }
+        .doctor-name { font-weight: 600; font-size: 0.9rem; }
+        .doctor-spec { font-size: 0.75rem; color: var(--text-muted); }
+        .doctor-status { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+        .status-online { background: rgba(16,185,129,0.2); color: var(--success); }
+        .status-busy { background: rgba(245,158,11,0.2); color: var(--accent); }
+        .rating { display: flex; align-items: center; gap: 0.25rem; color: var(--accent); font-size: 0.8rem; }
+
+        /* Search Section */
+        .search-section { padding: 2rem; position: relative; z-index: 10; margin-top: -3rem; }
+        .search-container { max-width: 1000px; margin: 0 auto; }
+        .search-box {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+            padding: 1rem; display: flex; gap: 1rem; align-items: center; box-shadow: var(--shadow-lg);
+        }
+        .search-input-wrapper { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--bg); border-radius: 12px; border: 1px solid var(--border); }
+        .search-input-wrapper:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
+        .search-input-wrapper i { color: var(--text-muted); }
+        .search-input { flex: 1; background: none; border: none; color: var(--text); font-size: 1rem; outline: none; }
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-filters { display: flex; gap: 0.5rem; }
+        .filter-btn {
+            padding: 0.75rem 1.25rem; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text-muted); font-size: 0.875rem; font-weight: 500;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .filter-btn:hover, .filter-btn.active { background: var(--gradient-primary); color: white; border-color: transparent; }
+        .search-btn {
+            padding: 0.875rem 2rem; background: var(--gradient-primary); color: white; border: none;
+            border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; gap: 0.5rem; white-space: nowrap;
+        }
+        .search-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+
+        /* Quick Access */
+        .quick-access { padding: 3rem 2rem; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-label {
+            display: inline-block; padding: 0.375rem 1rem; background: rgba(14,165,233,0.1);
+            border: 1px solid rgba(14,165,233,0.3); border-radius: 9999px;
+            font-size: 0.8rem; font-weight: 600; color: var(--primary-light); margin-bottom: 1rem;
+        }
+        .section-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .section-desc { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        .specialties-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; max-width: 1200px; margin: 0 auto; }
+        .specialty-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+            padding: 1.5rem 1rem; text-align: center; cursor: pointer; transition: all 0.3s;
+            text-decoration: none; color: var(--text);
+        }
+        .specialty-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow-glow); }
+        .specialty-icon { width: 56px; height: 56px; background: rgba(14,165,233,0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 0.75rem; transition: all 0.3s; }
+        .specialty-card:hover .specialty-icon { background: var(--gradient-primary); transform: scale(1.1); }
+        .specialty-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+        .specialty-count { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* Features Section */
+        .features { padding: 4rem 2rem; background: linear-gradient(180deg, var(--bg) 0%, rgba(30,41,59,0.5) 50%, var(--bg) 100%); }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+        .feature-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+            padding: 2rem; transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: var(--gradient-primary); transform: scaleX(0); transition: transform 0.3s;
+        }
+        .feature-card:hover::before { transform: scaleX(1); }
+        .feature-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow-lg); }
+        .feature-icon { width: 60px; height: 60px; background: rgba(14,165,233,0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem; }
+        .feature-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .feature-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+        .feature-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary-light); font-weight: 600; font-size: 0.875rem; margin-top: 1rem; text-decoration: none; }
+        .feature-link:hover { gap: 0.75rem; }
+
+        /* Symptom Checker */
+        .symptom-checker { padding: 4rem 2rem; }
+        .symptom-container { max-width: 900px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; box-shadow: var(--shadow-lg); }
+        .symptom-header { text-align: center; margin-bottom: 2rem; }
+        .symptom-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .symptom-desc { color: var(--text-muted); }
+        .symptom-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; }
+        .symptom-tag {
+            padding: 0.5rem 1rem; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 9999px; font-size: 0.875rem; cursor: pointer; transition: all 0.2s;
+            color: var(--text-muted);
+        }
+        .symptom-tag:hover { background: rgba(14,165,233,0.1); border-color: var(--primary); color: var(--primary-light); }
+        .symptom-tag.selected { background: var(--gradient-primary); color: white; border-color: transparent; }
+        .symptom-result { display: none; background: var(--bg); border-radius: 16px; padding: 1.5rem; margin-top: 1.5rem; border: 1px solid var(--border); }
+        .symptom-result.active { display: block; animation: fadeInUp 0.4s ease; }
+        .result-doctor { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-card); border-radius: 12px; margin-bottom: 0.75rem; border: 1px solid var(--border); }
+        .result-doctor:hover { border-color: var(--primary); }
+
+        /* Top Doctors */
+        .doctors { padding: 4rem 2rem; }
+        .doctors-header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 2rem; }
+        .doctors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+        .doctor-profile {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+            overflow: hidden; transition: all 0.3s; cursor: pointer;
+        }
+        .doctor-profile:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: var(--shadow-glow); }
+        .doctor-cover { height: 100px; background: var(--gradient-primary); position: relative; }
+        .doctor-avatar-lg {
+            width: 80px; height: 80px; border-radius: 50%; background: var(--bg-card);
+            border: 4px solid var(--bg-card); position: absolute; bottom: -40px; left: 1.5rem;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem;
+        }
+        .doctor-body { padding: 3rem 1.5rem 1.5rem; }
+        .doctor-name-lg { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .doctor-spec-lg { color: var(--primary-light); font-size: 0.9rem; font-weight: 500; margin-bottom: 0.75rem; }
+        .doctor-meta { display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-muted); }
+        .doctor-meta span { display: flex; align-items: center; gap: 0.25rem; }
+        .doctor-footer { display: flex; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+        .btn-book { flex: 1; padding: 0.75rem; background: var(--gradient-primary); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-book:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+        .btn-video { padding: 0.75rem; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+        .btn-video:hover { border-color: var(--success); color: var(--success); }
+
+        /* How It Works */
+        .how-it-works { padding: 4rem 2rem; }
+        .steps-container { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; position: relative; }
+        .steps-container::before {
+            content: ''; position: absolute; top: 40px; left: 10%; right: 10%; height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary)); z-index: 0;
+        }
+        .step { text-align: center; position: relative; z-index: 1; }
+        .step-number {
+            width: 80px; height: 80px; background: var(--bg-card); border: 3px solid var(--primary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 800; color: var(--primary-light); margin: 0 auto 1.5rem;
+            box-shadow: var(--shadow-glow);
+        }
+        .step-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .step-desc { color: var(--text-muted); font-size: 0.875rem; }
+
+        /* Testimonials */
+        .testimonials { padding: 4rem 2rem; background: linear-gradient(180deg, transparent 0%, rgba(30,41,59,0.3) 50%, transparent 100%); }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+        .testimonial-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+            padding: 2rem; transition: all 0.3s;
+        }
+        .testimonial-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .testimonial-stars { color: var(--accent); margin-bottom: 1rem; }
+        .testimonial-text { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem; }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+        .testimonial-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+        .testimonial-name { font-weight: 600; }
+        .testimonial-role { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* App Download */
+        .app-section { padding: 4rem 2rem; }
+        .app-container {
+            max-width: 1100px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 24px; padding: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+            position: relative; overflow: hidden;
+        }
+        .app-container::before {
+            content: ''; position: absolute; top: -50%; right: -20%; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%); pointer-events: none;
+        }
+        .app-title { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+        .app-desc { color: var(--text-muted); margin-bottom: 2rem; line-height: 1.7; }
+        .app-features { margin-bottom: 2rem; }
+        .app-feature { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; font-size: 0.95rem; }
+        .app-feature i { color: var(--success); }
+        .app-buttons { display: flex; gap: 1rem; }
+        .app-btn {
+            padding: 0.875rem 1.5rem; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 12px; color: var(--text); text-decoration: none; display: flex;
+            align-items: center; gap: 0.75rem; font-weight: 600; transition: all 0.2s;
+        }
+        .app-btn:hover { border-color: var(--primary); background: rgba(14,165,233,0.1); }
+        .app-visual { position: relative; }
+        .phone-mockup {
+            width: 280px; height: 560px; background: var(--bg); border: 8px solid var(--bg-hover);
+            border-radius: 40px; margin: 0 auto; position: relative; overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        .phone-notch { width: 120px; height: 25px; background: var(--bg-hover); border-radius: 0 0 20px 20px; margin: 0 auto; }
+        .phone-screen { padding: 1rem; }
+        .phone-card { background: var(--bg-card); border-radius: 12px; padding: 0.75rem; margin-bottom: 0.75rem; font-size: 0.8rem; }
+
+        /* Footer */
+        .footer { padding: 4rem 2rem 2rem; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto; }
+        .footer-brand { margin-bottom: 1rem; }
+        .footer-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.5rem; }
+        .footer-social { display: flex; gap: 0.75rem; }
+        .social-link {
+            width: 40px; height: 40px; background: var(--bg-hover); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; color: var(--text-muted);
+            text-decoration: none; transition: all 0.2s;
+        }
+        .social-link:hover { background: var(--primary); color: white; }
+        .footer-title { font-weight: 700; margin-bottom: 1.25rem; font-size: 1rem; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 0.75rem; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--primary-light); }
+        .footer-bottom {
+            max-width: 1200px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; color: var(--text-muted);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
+        .modal {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px;
+            max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;
+            box-shadow: var(--shadow-lg); animation: fadeInUp 0.3s ease;
+        }
+        .modal-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1.25rem; font-weight: 700; }
+        .modal-close { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .modal-close:hover { background: var(--bg-hover); color: var(--text); }
+        .modal-body { padding: 1.5rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-muted); }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; padding: 0.875rem 1rem; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text); font-size: 0.9rem; outline: none; transition: all 0.2s;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
+        .form-textarea { min-height: 100px; resize: vertical; }
+        .modal-footer { padding: 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 1rem; }
+        .btn-full { flex: 1; padding: 0.875rem; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+
+        /* Emergency Modal */
+        .emergency-modal .modal { max-width: 600px; border-color: var(--danger); }
+        .emergency-header { background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%); color: white; padding: 2rem; text-align: center; border-radius: 24px 24px 0 0; }
+        .emergency-header i { font-size: 3rem; margin-bottom: 1rem; animation: heartbeat 1.5s infinite; }
+        .emergency-header h2 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        .emergency-contacts { padding: 1.5rem; }
+        .emergency-contact { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg); border-radius: 12px; margin-bottom: 0.75rem; border: 1px solid var(--border); }
+        .emergency-contact:hover { border-color: var(--danger); }
+        .emergency-icon { width: 48px; height: 48px; background: rgba(239,68,68,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--danger); font-size: 1.25rem; }
+        .emergency-info { flex: 1; }
+        .emergency-name { font-weight: 600; }
+        .emergency-number { color: var(--danger); font-size: 1.1rem; font-weight: 700; }
+        .emergency-call { padding: 0.75rem 1.25rem; background: var(--danger); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; }
+
+        /* Toast */
+        .toast-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 3000; display: flex; flex-direction: column; gap: 0.75rem; }
+        .toast {
+            padding: 1rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; color: var(--text); font-weight: 500; box-shadow: var(--shadow-lg);
+            display: flex; align-items: center; gap: 0.75rem; animation: slideInRight 0.3s ease;
+        }
+        .toast-success { border-left: 4px solid var(--success); }
+        .toast-error { border-left: 4px solid var(--danger); }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; }
+            .hero-title { font-size: 2.5rem; }
+            .hero-desc { margin: 0 auto 2rem; }
+            .hero-stats { justify-content: center; }
+            .hero-cta-group { justify-content: center; }
+            .hero-visual { display: none; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .steps-container { grid-template-columns: repeat(2, 1fr); }
+            .steps-container::before { display: none; }
+            .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+            .app-container { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 0.75rem 1rem; }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero { padding: 6rem 1rem 3rem; }
+            .hero-title { font-size: 2rem; }
+            .search-box { flex-direction: column; }
+            .search-filters { flex-wrap: wrap; justify-content: center; }
+            .features-grid { grid-template-columns: 1fr; }
+            .steps-container { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            .specialties-grid { grid-template-columns: repeat(2, 1fr); }
+            .doctors-header { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon">🏥</div>
+            <span class="logo-text">MediConnect</span>
+        </a>
+        <div class="nav-links">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#doctors" class="nav-link">Find Doctors</a>
+            <a href="#symptoms" class="nav-link">Symptom Checker</a>
+            <a href="#features" class="nav-link">Services</a>
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button class="emergency-btn" onclick="openEmergency()">
+                <i class="fas fa-heartbeat"></i> Emergency
+            </button>
+            <a href="#book" class="nav-cta">
+                <i class="fas fa-calendar-check"></i> Book Now
+            </a>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-container">
+            <div class="animate-fadeInUp">
+                <div class="hero-badge">
+                    <span class="pulse-dot"></span>
+                    20,000+ Verified Doctors Available
+                </div>
+                <h1 class="hero-title">
+                    Healthcare at Your<br>
+                    <span>Fingertips</span>
+                </h1>
+                <p class="hero-desc">
+                    Pakistan's most advanced healthcare platform. Book appointments, 
+                    consult online, get medicines delivered — all in one place. 
+                    Your health, simplified.
+                </p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">20K+</div>
+                        <div class="hero-stat-label">Doctors</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">10M+</div>
+                        <div class="hero-stat-label">Patients</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">50+</div>
+                        <div class="hero-stat-label">Cities</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">4.9★</div>
+                        <div class="hero-stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="hero-cta-group">
+                    <a href="#book" class="btn-primary">
+                        <i class="fas fa-calendar-check"></i> Book Appointment
+                    </a>
+                    <a href="#symptoms" class="btn-secondary">
+                        <i class="fas fa-stethoscope"></i> Check Symptoms
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual animate-fadeInUp animate-delay-2">
+                <div class="hero-card hero-card-1">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <span style="font-weight: 600;">Available Doctors</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Live</span>
+                    </div>
+                    <div class="doctor-card">
+                        <div class="doctor-avatar">👨‍⚕️</div>
+                        <div class="doctor-info">
+                            <div class="doctor-name">Dr. Ahmed Khan</div>
+                            <div class="doctor-spec">Cardiologist - Lahore</div>
+                        </div>
+                        <div class="doctor-status status-online">Online</div>
+                    </div>
+                    <div class="doctor-card">
+                        <div class="doctor-avatar">👩‍⚕️</div>
+                        <div class="doctor-info">
+                            <div class="doctor-name">Dr. Sarah Ali</div>
+                            <div class="doctor-spec">Dermatologist - Karachi</div>
+                        </div>
+                        <div class="doctor-status status-online">Online</div>
+                    </div>
+                    <div class="doctor-card">
+                        <div class="doctor-avatar">👨‍⚕️</div>
+                        <div class="doctor-info">
+                            <div class="doctor-name">Dr. Usman Farooq</div>
+                            <div class="doctor-spec">Orthopedic - Islamabad</div>
+                        </div>
+                        <div class="doctor-status status-busy">Busy</div>
+                    </div>
+                    <div style="text-align: center; margin-top: 0.5rem;">
+                        <span style="font-size: 0.8rem; color: var(--primary-light);">+247 more online now</span>
+                    </div>
+                </div>
+                <div class="hero-card hero-card-2">
+                    <div class="doctor-card">
+                        <div class="doctor-avatar">👩‍⚕️</div>
+                        <div class="doctor-info">
+                            <div class="doctor-name">Dr. Ayesha Malik</div>
+                            <div class="doctor-spec">Gynecologist</div>
+                        </div>
+                        <div class="rating">⭐ 4.9</div>
+                    </div>
+                </div>
+                <div class="hero-card hero-card-3">
+                    <div class="doctor-card">
+                        <div class="doctor-avatar">👨‍⚕️</div>
+                        <div class="doctor-info">
+                            <div class="doctor-name">Dr. Hassan Raza</div>
+                            <div class="doctor-spec">Neurologist</div>
+                        </div>
+                        <div class="rating">⭐ 5.0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" id="book">
+        <div class="search-container">
+            <div class="search-box">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="search-input" placeholder="Search doctors, symptoms, specialties..." id="mainSearch" oninput="handleSearch()">
+                </div>
+                <div class="search-filters">
+                    <button class="filter-btn active" onclick="setFilter(this, 'all')">
+                        <i class="fas fa-th-large"></i> All
+                    </button>
+                    <button class="filter-btn" onclick="setFilter(this, 'video')">
+                        <i class="fas fa-video"></i> Video
+                    </button>
+                    <button class="filter-btn" onclick="setFilter(this, 'clinic')">
+                        <i class="fas fa-hospital"></i> Clinic
+                    </button>
+                    <button class="filter-btn" onclick="setFilter(this, 'home')">
+                        <i class="fas fa-home"></i> Home
+                    </button>
+                </div>
+                <button class="search-btn" onclick="performSearch()">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialties -->
+    <section class="quick-access" id="specialties">
+        <div class="section-header">
+            <span class="section-label">Browse by Specialty</span>
+            <h2 class="section-title">Find the Right Specialist</h2>
+            <p class="section-desc">Choose from 50+ medical specialties and connect with verified experts</p>
+        </div>
+        <div class="specialties-grid" id="specialtiesGrid"></div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <span class="section-label">Our Services</span>
+            <h2 class="section-title">Complete Healthcare Ecosystem</h2>
+            <p class="section-desc">Everything you need for your health, in one powerful platform</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card animate-fadeInUp animate-delay-1">
+                <div class="feature-icon">📹</div>
+                <h3 class="feature-title">Video Consultation</h3>
+                <p class="feature-desc">Connect with top doctors via secure HD video calls. Get prescriptions, medical advice, and follow-ups from the comfort of your home.</p>
+                <a href="#" class="feature-link">Consult Now <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card animate-fadeInUp animate-delay-2">
+                <div class="feature-icon">🏥</div>
+                <h3 class="feature-title">Clinic Appointments</h3>
+                <p class="feature-desc">Book in-person visits with verified doctors across 50+ cities. Real-time availability, instant confirmation, and zero wait times.</p>
+                <a href="#" class="feature-link">Book Clinic <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card animate-fadeInUp animate-delay-3">
+                <div class="feature-icon">💊</div>
+                <h3 class="feature-title">Medicine Delivery</h3>
+                <p class="feature-desc">Order prescribed medicines and health products. Fast delivery to your doorstep with genuine product guarantee.</p>
+                <a href="#" class="feature-link">Order Now <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card animate-fadeInUp animate-delay-1">
+                <div class="feature-icon">🔬</div>
+                <h3 class="feature-title">Lab Tests at Home</h3>
+                <p class="feature-desc">Book diagnostic tests with home sample collection. Get digital reports within 24 hours, shared directly with your doctor.</p>
+                <a href="#" class="feature-link">Book Test <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card animate-fadeInUp animate-delay-2">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">AI Symptom Checker</h3>
+                <p class="feature-desc">Describe your symptoms and get instant guidance on which specialist to consult. Powered by advanced medical AI.</p>
+                <a href="#symptoms" class="feature-link">Check Symptoms <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card animate-fadeInUp animate-delay-3">
+                <div class="feature-icon">📋</div>
+                <h3 class="feature-title">Health Records</h3>
+                <p class="feature-desc">Store all your medical history, prescriptions, and reports securely. Access anytime, share with any doctor instantly.</p>
+                <a href="#" class="feature-link">My Records <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Symptom Checker -->
+    <section class="symptom-checker" id="symptoms">
+        <div class="section-header">
+            <span class="section-label">AI Powered</span>
+            <h2 class="section-title">Smart Symptom Checker</h2>
+            <p class="section-desc">Select your symptoms and get instant recommendations for the right specialist</p>
+        </div>
+        <div class="symptom-container">
+            <div class="symptom-header">
+                <h3 class="symptom-title">What symptoms are you experiencing?</h3>
+                <p class="symptom-desc">Select all that apply (select multiple)</p>
+            </div>
+            <div class="symptom-tags" id="symptomTags"></div>
+            <button class="btn-primary" style="width: 100%; margin-top: 1rem;" onclick="analyzeSymptoms()">
+                <i class="fas fa-stethoscope"></i> Analyze Symptoms
+            </button>
+            <div class="symptom-result" id="symptomResult"></div>
+        </div>
+    </section>
+
+    <!-- Top Doctors -->
+    <section class="doctors" id="doctors">
+        <div class="doctors-header">
+            <div>
+                <span class="section-label">Top Rated</span>
+                <h2 class="section-title" style="text-align: left; margin: 0;">Featured Doctors</h2>
+            </div>
+            <a href="#" class="nav-cta">
+                View All <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        <div class="doctors-grid" id="doctorsGrid"></div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-header">
+            <span class="section-label">Simple Process</span>
+            <h2 class="section-title">How MediConnect Works</h2>
+            <p class="section-desc">Get quality healthcare in 4 simple steps</p>
+        </div>
+        <div class="steps-container">
+            <div class="step animate-fadeInUp animate-delay-1">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Search</h3>
+                <p class="step-desc">Find doctors by specialty, symptom, or location with smart filters</p>
+            </div>
+            <div class="step animate-fadeInUp animate-delay-2">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Book</h3>
+                <p class="step-desc">Choose video, clinic, or home visit. Pick your preferred time slot</p>
+            </div>
+            <div class="step animate-fadeInUp animate-delay-3">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Consult</h3>
+                <p class="step-desc">Connect with your doctor via video or visit the clinic seamlessly</p>
+            </div>
+            <div class="step animate-fadeInUp animate-delay-4">
+                <div class="step-number">4</div>
+                <h3 class="step-title">Follow-up</h3>
+                <p class="step-desc">Get prescriptions, lab tests, and medicines delivered to you</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="section-header">
+            <span class="section-label">Patient Stories</span>
+            <h2 class="section-title">Trusted by Millions</h2>
+            <p class="section-desc">Real experiences from real patients across Pakistan</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card animate-fadeInUp animate-delay-1">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"I was able to consult a cardiologist within 15 minutes from my home in Multan. The video quality was excellent and the doctor was very professional. Saved me a 4-hour trip to Lahore!"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">👨</div>
+                    <div>
+                        <div class="testimonial-name">Muhammad Asif</div>
+                        <div class="testimonial-role">Patient from Multan</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card animate-fadeInUp animate-delay-2">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"As a working mother, finding time to visit a doctor was impossible. MediConnect's video consultations changed everything. I can now get medical advice during my lunch break!"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">👩</div>
+                    <div>
+                        <div class="testimonial-name">Fatima Zahra</div>
+                        <div class="testimonial-role">Working Professional, Karachi</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card animate-fadeInUp animate-delay-3">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"The symptom checker helped me identify that my headaches needed a neurologist, not just painkillers. Early diagnosis changed my life. Thank you MediConnect team!"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">👨</div>
+                    <div>
+                        <div class="testimonial-name">Ali Hassan</div>
+                        <div class="testimonial-role">Student, Islamabad</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Download -->
+    <section class="app-section">
+        <div class="app-container">
+            <div>
+                <h2 class="app-title">Download the MediConnect App</h2>
+                <p class="app-desc">Get healthcare on the go. Book appointments, consult doctors, order medicines, and access your health records — all from your phone.</p>
+                <div class="app-features">
+                    <div class="app-feature"><i class="fas fa-check-circle"></i> Instant video consultations</div>
+                    <div class="app-feature"><i class="fas fa-check-circle"></i> Real-time doctor availability</div>
+                    <div class="app-feature"><i class="fas fa-check-circle"></i> Medicine delivery tracking</div>
+                    <div class="app-feature"><i class="fas fa-check-circle"></i> Digital health records</div>
+                </div>
+                <div class="app-buttons">
+                    <a href="#" class="app-btn">
+                        <i class="fab fa-apple" style="font-size: 1.5rem;"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; opacity: 0.7;">Download on</div>
+                            <div>App Store</div>
+                        </div>
+                    </a>
+                    <a href="#" class="app-btn">
+                        <i class="fab fa-google-play" style="font-size: 1.5rem;"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; opacity: 0.7;">Get it on</div>
+                            <div>Google Play</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="app-visual">
+                <div class="phone-mockup">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div style="text-align: center; padding: 0.5rem;">
+                            <div style="font-weight: 700; margin-bottom: 0.5rem;">🏥 MediConnect</div>
+                        </div>
+                        <div class="phone-card">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="font-size: 1.25rem;">👨‍⚕️</span>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.8rem;">Dr. Ahmed Khan</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-muted);">Cardiologist</div>
+                                </div>
+                                <span style="margin-left: auto; background: rgba(16,185,129,0.2); color: var(--success); padding: 0.25rem 0.5rem; border-radius: 999px; font-size: 0.65rem;">Online</span>
+                            </div>
+                        </div>
+                        <div class="phone-card">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="font-size: 1.25rem;">👩‍⚕️</span>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 0.8rem;">Dr. Sarah Ali</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-muted);">Dermatologist</div>
+                                </div>
+                                <span style="margin-left: auto; background: rgba(245,158,11,0.2); color: var(--accent); padding: 0.25rem 0.5rem; border-radius: 999px; font-size: 0.65rem;">Busy</span>
+                            </div>
+                        </div>
+                        <div class="phone-card" style="background: var(--gradient-primary); color: white; text-align: center;">
+                            <div style="font-weight: 600; font-size: 0.85rem;">🩺 Book Appointment</div>
+                        </div>
+                        <div class="phone-card" style="background: var(--gradient-success); color: white; text-align: center;">
+                            <div style="font-weight: 600; font-size: 0.85rem;">💊 Order Medicine</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <div class="logo-icon">🏥</div>
+                        <span class="logo-text">MediConnect</span>
+                    </a>
+                </div>
+                <p class="footer-desc">Pakistan's most trusted digital healthcare platform. Connecting patients with verified doctors, delivering medicines, and bringing diagnostics to your doorstep.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="footer-title">For Patients</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Search Doctors</a></li>
+                    <li><a href="#">Book Appointment</a></li>
+                    <li><a href="#">Video Consultation</a></li>
+                    <li><a href="#">Order Medicine</a></li>
+                    <li><a href="#">Lab Tests</a></li>
+                    <li><a href="#">Health Articles</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">For Doctors</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Join as Doctor</a></li>
+                    <li><a href="#">Doctor Dashboard</a></li>
+                    <li><a href="#">Clinic Management</a></li>
+                    <li><a href="#">Patient Records</a></li>
+                    <li><a href="#">Billing & Payments</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Company</h4>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>© 2026 MediConnect. All rights reserved.</div>
+            <div style="display: flex; gap: 1.5rem;">
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Privacy</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Terms</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">📅 Book Appointment</div>
+                <button class="modal-close" onclick="closeModal('bookingModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="bookingDoctorInfo"></div>
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-input" id="bookName" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" id="bookPhone" placeholder="03XX-XXXXXXX">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="bookDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Time</label>
+                        <select class="form-select" id="bookTime">
+                            <option>09:00 AM</option><option>09:30 AM</option><option>10:00 AM</option>
+                            <option>10:30 AM</option><option>11:00 AM</option><option>11:30 AM</option>
+                            <option>02:00 PM</option><option>02:30 PM</option><option>03:00 PM</option>
+                            <option>03:30 PM</option><option>04:00 PM</option><option>04:30 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Consultation Type</label>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="filter-btn active" style="flex: 1;" onclick="setBookType(this, 'video')">
+                            <i class="fas fa-video"></i> Video
+                        </button>
+                        <button class="filter-btn" style="flex: 1;" onclick="setBookType(this, 'clinic')">
+                            <i class="fas fa-hospital"></i> Clinic
+                        </button>
+                        <button class="filter-btn" style="flex: 1;" onclick="setBookType(this, 'home')">
+                            <i class="fas fa-home"></i> Home
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Symptoms / Notes</label>
+                    <textarea class="form-textarea" id="bookNotes" placeholder="Describe your symptoms or reason for visit..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-full" style="background: var(--bg-hover); color: var(--text);" onclick="closeModal('bookingModal')">Cancel</button>
+                <button class="btn-full" style="background: var(--gradient-primary); color: white;" onclick="confirmBooking()">
+                    <i class="fas fa-calendar-check"></i> Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Modal -->
+    <div class="modal-overlay emergency-modal" id="emergencyModal">
+        <div class="modal">
+            <div class="emergency-header">
+                <i class="fas fa-heartbeat"></i>
+                <h2>Emergency Services</h2>
+                <p>For life-threatening emergencies, call immediately</p>
+            </div>
+            <div class="emergency-contacts">
+                <div class="emergency-contact">
+                    <div class="emergency-icon"><i class="fas fa-ambulance"></i></div>
+                    <div class="emergency-info">
+                        <div class="emergency-name">Rescue 1122</div>
+                        <div class="emergency-number">1122</div>
+                    </div>
+                    <button class="emergency-call" onclick="callEmergency('1122')">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                </div>
+                <div class="emergency-contact">
+                    <div class="emergency-icon"><i class="fas fa-first-aid"></i></div>
+                    <div class="emergency-info">
+                        <div class="emergency-name">Edhi Ambulance</div>
+                        <div class="emergency-number">115</div>
+                    </div>
+                    <button class="emergency-call" onclick="callEmergency('115')">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                </div>
+                <div class="emergency-contact">
+                    <div class="emergency-icon"><i class="fas fa-fire-extinguisher"></i></div>
+                    <div class="emergency-info">
+                        <div class="emergency-name">Fire Brigade</div>
+                        <div class="emergency-number">16</div>
+                    </div>
+                    <button class="emergency-call" onclick="callEmergency('16')">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                </div>
+                <div class="emergency-contact">
+                    <div class="emergency-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="emergency-info">
+                        <div class="emergency-name">Police Emergency</div>
+                        <div class="emergency-number">15</div>
+                    </div>
+                    <button class="emergency-call" onclick="callEmergency('15')">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                </div>
+                <div style="padding: 1rem; background: rgba(239,68,68,0.1); border-radius: 12px; margin-top: 0.5rem; border: 1px solid rgba(239,68,68,0.3);">
+                    <div style="font-weight: 600; color: var(--danger); margin-bottom: 0.5rem;"><i class="fas fa-exclamation-triangle"></i> Important</div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">For medical emergencies, Rescue 1122 provides free ambulance service across Pakistan. Stay calm and provide clear location details.</div>
+                </div>
+            </div>
+            <div style="padding: 0 1.5rem 1.5rem;">
+                <button class="btn-full" style="background: var(--bg-hover); color: var(--text); width: 100%;" onclick="closeModal('emergencyModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+
+        // ==================== DATA ====================
+        var specialties = [
+            { name: 'Cardiologist', icon: '❤️', count: 1240 },
+            { name: 'Dermatologist', icon: '🩹', count: 980 },
+            { name: 'Gynecologist', icon: '👩', count: 1150 },
+            { name: 'Orthopedic', icon: '🦴', count: 890 },
+            { name: 'Neurologist', icon: '🧠', count: 650 },
+            { name: 'Pediatrician', icon: '👶', count: 1320 },
+            { name: 'Psychiatrist', icon: '🧘', count: 720 },
+            { name: 'ENT Specialist', icon: '👂', count: 560 },
+            { name: 'Dentist', icon: '🦷', count: 1480 },
+            { name: 'Nutritionist', icon: '🥗', count: 430 },
+            { name: 'Urologist', icon: '🔬', count: 380 },
+            { name: 'Oncologist', icon: '🎗️', count: 290 },
+            { name: 'Endocrinologist', icon: '⚗️', count: 340 },
+            { name: 'Pulmonologist', icon: '🫁', count: 410 },
+            { name: 'Ophthalmologist', icon: '👁️', count: 780 },
+            { name: 'General Physician', icon: '🩺', count: 2450 }
+        ];
+
+        var doctors = [
+            { id: 1, name: 'Dr. Ahmed Khan', specialty: 'Cardiologist', city: 'Lahore', exp: 18, rating: 4.9, reviews: 342, fee: 2500, online: true, image: '👨', about: 'Senior Cardiologist at Shaukat Khanum Hospital. Specializes in interventional cardiology and heart failure management.' },
+            { id: 2, name: 'Dr. Sarah Ali', specialty: 'Dermatologist', city: 'Karachi', exp: 12, rating: 4.8, reviews: 528, fee: 2000, online: true, image: '👩', about: 'Expert in cosmetic dermatology, acne treatment, and laser procedures. Former consultant at Aga Khan University Hospital.' },
+            { id: 3, name: 'Dr. Usman Farooq', specialty: 'Orthopedic', city: 'Islamabad', exp: 15, rating: 4.7, reviews: 289, fee: 3000, online: false, image: '👨', about: 'Joint replacement specialist with expertise in minimally invasive arthroscopic surgery. 15+ years experience.' },
+            { id: 4, name: 'Dr. Ayesha Malik', specialty: 'Gynecologist', city: 'Lahore', exp: 14, rating: 4.9, reviews: 612, fee: 2200, online: true, image: '👩', about: 'High-risk pregnancy specialist and fertility expert. Dedicated to women\'s health and reproductive medicine.' },
+            { id: 5, name: 'Dr. Hassan Raza', specialty: 'Neurologist', city: 'Karachi', exp: 20, rating: 4.8, reviews: 198, fee: 3500, online: true, image: '👨', about: 'Neurology expert specializing in stroke management, epilepsy, and movement disorders. Published researcher.' },
+            { id: 6, name: 'Dr. Maria Iqbal', specialty: 'Pediatrician', city: 'Rawalpindi', exp: 10, rating: 4.9, reviews: 445, fee: 1800, online: true, image: '👩', about: 'Child health specialist with focus on developmental pediatrics and childhood nutrition. Loved by young patients!' }
+        ];
+
+        var symptoms = [
+            { id: 'chest-pain', name: 'Chest Pain', specialists: ['Cardiologist', 'Pulmonologist', 'General Physician'] },
+            { id: 'headache', name: 'Headache / Migraine', specialists: ['Neurologist', 'General Physician'] },
+            { id: 'fever', name: 'Fever', specialists: ['General Physician', 'Infectious Disease'] },
+            { id: 'skin-rash', name: 'Skin Rash', specialists: ['Dermatologist'] },
+            { id: 'joint-pain', name: 'Joint Pain', specialists: ['Orthopedic', 'Rheumatologist'] },
+            { id: 'stomach-pain', name: 'Stomach Pain', specialists: ['Gastroenterologist', 'General Physician'] },
+            { id: 'breathing', name: 'Breathing Difficulty', specialists: ['Pulmonologist', 'Cardiologist', 'ENT Specialist'] },
+            { id: 'depression', name: 'Depression / Anxiety', specialists: ['Psychiatrist', 'Psychologist'] },
+            { id: 'pregnancy', name: 'Pregnancy Related', specialists: ['Gynecologist'] },
+            { id: 'child-fever', name: 'Child Fever', specialists: ['Pediatrician', 'General Physician'] },
+            { id: 'eye-problem', name: 'Eye Problem', specialists: ['Ophthalmologist'] },
+            { id: 'tooth-pain', name: 'Tooth Pain', specialists: ['Dentist'] },
+            { id: 'diabetes', name: 'Diabetes / Sugar', specialists: ['Endocrinologist', 'General Physician'] },
+            { id: 'thyroid', name: 'Thyroid Issues', specialists: ['Endocrinologist'] },
+            { id: 'urinary', name: 'Urinary Problem', specialists: ['Urologist', 'Nephrologist'] },
+            { id: 'ear-pain', name: 'Ear Pain', specialists: ['ENT Specialist'] },
+            { id: 'weight-loss', name: 'Weight Loss / Gain', specialists: ['Nutritionist', 'Endocrinologist'] },
+            { id: 'cancer', name: 'Cancer Screening', specialists: ['Oncologist'] }
+        ];
+
+        var selectedSymptoms = [];
+        var currentBookType = 'video';
+        var currentDoctor = null;
+
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderSpecialties();
+            renderDoctors();
+            renderSymptoms();
+            setupScrollEffects();
+            setupNavbar();
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById('bookDate').value = today;
+        });
+
+        function setupNavbar() {
+            var navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                navbar.classList.toggle('scrolled', window.scrollY > 50);
+            });
+        }
+
+        function setupScrollEffects() {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-fadeInUp').forEach(function(el) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease';
+                observer.observe(el);
+            });
+        }
+
+        // ==================== RENDER ====================
+        function renderSpecialties() {
+            var grid = document.getElementById('specialtiesGrid');
+            grid.innerHTML = specialties.map(function(s) {
+                return '<a href="#doctors" class="specialty-card" onclick="filterBySpecialty(\'' + s.name + '\')">' +
+                    '<div class="specialty-icon">' + s.icon + '</div>' +
+                    '<div class="specialty-name">' + s.name + '</div>' +
+                    '<div class="specialty-count">' + s.count + ' doctors</div>' +
+                '</a>';
+            }).join('');
+        }
+
+        function renderDoctors() {
+            var grid = document.getElementById('doctorsGrid');
+            grid.innerHTML = doctors.map(function(d) {
+                var stars = '⭐'.repeat(Math.floor(d.rating)) + (d.rating % 1 >= 0.5 ? '⭐' : '');
+                return '<div class="doctor-profile" onclick="openBooking(' + d.id + ')">' +
+                    '<div class="doctor-cover"></div>' +
+                    '<div class="doctor-avatar-lg">' + d.image + '</div>' +
+                    '<div class="doctor-body">' +
+                        '<div class="doctor-name-lg">' + d.name + '</div>' +
+                        '<div class="doctor-spec-lg">' + d.specialty + '</div>' +
+                        '<div class="doctor-meta">' +
+                            '<span><i class="fas fa-map-marker-alt"></i> ' + d.city + '</span>' +
+                            '<span><i class="fas fa-briefcase"></i> ' + d.exp + ' yrs</span>' +
+                            '<span><i class="fas fa-star"></i> ' + d.rating + '</span>' +
+                        '</div>' +
+                        '<div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.6;">' + d.about.substring(0, 100) + '...</div>' +
+                        '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">' +
+                            '<div><span style="font-size: 1.25rem; font-weight: 700; color: var(--primary-light);">Rs. ' + d.fee + '</span><span style="font-size: 0.75rem; color: var(--text-muted);"> / consult</span></div>' +
+                            '<span class="doctor-status ' + (d.online ? 'status-online' : 'status-busy') + '">' + (d.online ? '● Online' : '● Offline') + '</span>' +
+                        '</div>' +
+                        '<div class="doctor-footer">' +
+                            '<button class="btn-book" onclick="event.stopPropagation(); openBooking(' + d.id + ')">' +
+                                '<i class="fas fa-calendar-check"></i> Book Now' +
+                            '</button>' +
+                            '<button class="btn-video" onclick="event.stopPropagation(); showToast("Video call feature coming soon!", "success")">' +
+                                '<i class="fas fa-video"></i>' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function renderSymptoms() {
+            var container = document.getElementById('symptomTags');
+            container.innerHTML = symptoms.map(function(s) {
+                return '<button class="symptom-tag" id="symptom-' + s.id + '" onclick="toggleSymptom(\'' + s.id + '\')">' + s.name + '</button>';
+            }).join('');
+        }
+
+        // ==================== SYMPTOM CHECKER ====================
+        function toggleSymptom(id) {
+            var btn = document.getElementById('symptom-' + id);
+            var idx = selectedSymptoms.indexOf(id);
+            if (idx > -1) {
+                selectedSymptoms.splice(idx, 1);
+                btn.classList.remove('selected');
+            } else {
+                selectedSymptoms.push(id);
+                btn.classList.add('selected');
+            }
+        }
+
+        function analyzeSymptoms() {
+            var resultDiv = document.getElementById('symptomResult');
+            if (selectedSymptoms.length === 0) {
+                showToast('Please select at least one symptom', 'error');
+                return;
+            }
+
+            var recommended = [];
+            selectedSymptoms.forEach(function(id) {
+                var sym = symptoms.find(function(s) { return s.id === id; });
+                if (sym) {
+                    sym.specialists.forEach(function(spec) {
+                        if (recommended.indexOf(spec) === -1) recommended.push(spec);
+                    });
+                }
+            });
+
+            var matchingDoctors = doctors.filter(function(d) {
+                return recommended.indexOf(d.specialty) !== -1;
+            });
+
+            var html = '<div style="margin-bottom: 1rem;"><h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">🩺 Recommended Specialists</h3><p style="color: var(--text-muted); font-size: 0.9rem;">Based on your symptoms, we recommend consulting:</p></div>';
+            html += '<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">';
+            recommended.forEach(function(spec) {
+                html += '<span style="padding: 0.5rem 1rem; background: var(--gradient-primary); color: white; border-radius: 999px; font-size: 0.85rem; font-weight: 500;">' + spec + '</span>';
+            });
+            html += '</div>';
+
+            if (matchingDoctors.length > 0) {
+                html += '<div style="margin-bottom: 1rem;"><h4 style="font-size: 1.1rem; margin-bottom: 0.75rem;">👨‍⚕️ Available Doctors</h4></div>';
+                html += matchingDoctors.map(function(d) {
+                    return '<div class="result-doctor" onclick="openBooking(' + d.id + ')">' +
+                        '<div class="doctor-avatar">' + d.image + '</div>' +
+                        '<div style="flex: 1;">' +
+                            '<div style="font-weight: 600;">' + d.name + '</div>' +
+                            '<div style="font-size: 0.8rem; color: var(--text-muted);">' + d.specialty + ' • ' + d.city + ' • ' + d.exp + ' yrs exp</div>' +
+                        '</div>' +
+                        '<div style="text-align: right;">' +
+                            '<div style="font-weight: 700; color: var(--primary-light);">Rs. ' + d.fee + '</div>' +
+                            '<div style="font-size: 0.75rem; color: var(--text-muted);">⭐ ' + d.rating + ' (' + d.reviews + ')</div>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+            }
+
+            resultDiv.innerHTML = html;
+            resultDiv.classList.add('active');
+            showToast('Analysis complete! Found ' + matchingDoctors.length + ' matching doctors');
+        }
+
+        // ==================== BOOKING ====================
+        function openBooking(doctorId) {
+            currentDoctor = doctors.find(function(d) { return d.id === doctorId; });
+            if (!currentDoctor) return;
+            var info = document.getElementById('bookingDoctorInfo');
+            info.innerHTML = '<div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg); border-radius: 12px; margin-bottom: 1.5rem;">' +
+                '<div style="font-size: 2.5rem;">' + currentDoctor.image + '</div>' +
+                '<div>' +
+                    '<div style="font-weight: 700; font-size: 1.1rem;">' + currentDoctor.name + '</div>' +
+                    '<div style="color: var(--primary-light); font-weight: 500;">' + currentDoctor.specialty + '</div>' +
+                    '<div style="font-size: 0.8rem; color: var(--text-muted);">⭐ ' + currentDoctor.rating + ' • Rs. ' + currentDoctor.fee + ' • ' + currentDoctor.city + '</div>' +
+                '</div>' +
+            '</div>';
+            document.getElementById('bookingModal').classList.add('active');
+        }
+
+        function setBookType(btn, type) {
+            currentBookType = type;
+            document.querySelectorAll('#bookingModal .filter-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+        }
+
+        function confirmBooking() {
+            var name = document.getElementById('bookName').value;
+            var phone = document.getElementById('bookPhone').value;
+            var date = document.getElementById('bookDate').value;
+            if (!name || !phone || !date) {
+                showToast('Please fill all required fields', 'error');
+                return;
+            }
+            closeModal('bookingModal');
+            showToast('✅ Appointment booked successfully! Confirmation SMS sent to ' + phone, 'success');
+            document.getElementById('bookName').value = '';
+            document.getElementById('bookPhone').value = '';
+            document.getElementById('bookNotes').value = '';
+        }
+
+        // ==================== EMERGENCY ====================
+        function openEmergency() {
+            document.getElementById('emergencyModal').classList.add('active');
+        }
+
+        function callEmergency(number) {
+            showToast('Calling ' + number + '...', 'success');
+            window.location.href = 'tel:' + number;
+        }
+
+        // ==================== SEARCH ====================
+        function setFilter(btn, type) {
+            document.querySelectorAll('.search-filters .filter-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+        }
+
+        function performSearch() {
+            var query = document.getElementById('mainSearch').value;
+            if (!query) { showToast('Enter a search term', 'error'); return; }
+            showToast('🔍 Searching for "' + query + '"...', 'success');
+            document.getElementById('doctors').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleSearch() {
+            // Real-time search logic can go here
+        }
+
+        function filterBySpecialty(spec) {
+            showToast('Showing ' + spec + 's', 'success');
+        }
+
+        // ==================== UTILITIES ====================
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function showToast(message, type) {
+            type = type || 'success';
+            var container = document.getElementById('toastContainer');
+            var toast = document.createElement('div');
+            toast.className = 'toast toast-' + type;
+            var icon = type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️';
+            toast.innerHTML = '<span style="font-size: 1.25rem;">' + icon + '</span> ' + message;
+            container.appendChild(toast);
+            setTimeout(function() { toast.remove(); }, 4000);
+        }
+
+        // ==================== MOBILE MENU ====================
+        function toggleMobileMenu() {
+            var sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.toggle('open');
+        }
+
+        // ==================== NAV ACTIVE STATE ====================
+        document.querySelectorAll('.nav-link').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('.nav-link').forEach(function(l) { l.classList.remove('active'); });
+                e.target.classList.add('active');
+            });
+        });
+
+        // Close modals on outside click
+        document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
