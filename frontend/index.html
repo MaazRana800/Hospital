@@ -125,6 +125,7 @@
 
         /* Hero Visual */
         .hero-visual { position: relative; }
+        .hero-photo { width: 100%; border-radius: 28px; object-fit: cover; display: block; margin-bottom: 1.5rem; box-shadow: var(--shadow-lg); }
         .hero-card {
             background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
             padding: 1.5rem; box-shadow: var(--shadow-lg); animation: float 6s ease infinite;
@@ -250,7 +251,8 @@
         .testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .partners { padding: 3rem 2rem; }
         .partners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; max-width: 1200px; margin: 0 auto; }
-        .partner-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 1.25rem 1rem; text-align: center; font-weight: 600; color: var(--text); box-shadow: var(--shadow-sm); }
+        .partner-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 1.25rem 1rem; text-align: center; font-weight: 600; color: var(--text); box-shadow: var(--shadow-sm); min-height: 150px; }
+        .partner-logo { width: 56px; height: 56px; border-radius: 16px; object-fit: cover; border: 1px solid var(--border); }
         .doctor-body { padding: 3rem 1.5rem 1.5rem; }
         .doctor-name-lg { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
         .doctor-spec-lg { color: var(--primary-light); font-size: 0.9rem; font-weight: 500; margin-bottom: 0.75rem; }
@@ -504,13 +506,14 @@
                 </div>
             </div>
             <div class="hero-visual animate-fadeInUp animate-delay-2">
+                <img class="hero-photo" src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=900&q=80" alt="Doctor consulting patient">
                 <div class="hero-card hero-card-1">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                         <span style="font-weight: 600;">Available Doctors</span>
                         <span style="font-size: 0.8rem; color: var(--text-muted);">Live</span>
                     </div>
                     <div class="doctor-card">
-                        <div class="doctor-avatar">👨‍⚕️</div>
+                        <div class="doctor-avatar"><img src="https://i.pravatar.cc/100?img=32" alt="Dr. Ahmed Khan"></div>
                         <div class="doctor-info">
                             <div class="doctor-name">Dr. Ahmed Khan</div>
                             <div class="doctor-spec">Cardiologist - Lahore</div>
@@ -518,7 +521,7 @@
                         <div class="doctor-status status-online">Online</div>
                     </div>
                     <div class="doctor-card">
-                        <div class="doctor-avatar">👩‍⚕️</div>
+                        <div class="doctor-avatar"><img src="https://i.pravatar.cc/100?img=47" alt="Dr. Sarah Ali"></div>
                         <div class="doctor-info">
                             <div class="doctor-name">Dr. Sarah Ali</div>
                             <div class="doctor-spec">Dermatologist - Karachi</div>
@@ -526,7 +529,7 @@
                         <div class="doctor-status status-online">Online</div>
                     </div>
                     <div class="doctor-card">
-                        <div class="doctor-avatar">👨‍⚕️</div>
+                        <div class="doctor-avatar"><img src="https://i.pravatar.cc/100?img=52" alt="Dr. Usman Farooq"></div>
                         <div class="doctor-info">
                             <div class="doctor-name">Dr. Usman Farooq</div>
                             <div class="doctor-spec">Orthopedic - Islamabad</div>
@@ -539,7 +542,7 @@
                 </div>
                 <div class="hero-card hero-card-2">
                     <div class="doctor-card">
-                        <div class="doctor-avatar">👩‍⚕️</div>
+                        <div class="doctor-avatar"><img src="https://i.pravatar.cc/100?img=12" alt="Dr. Ayesha Malik"></div>
                         <div class="doctor-info">
                             <div class="doctor-name">Dr. Ayesha Malik</div>
                             <div class="doctor-spec">Gynecologist</div>
@@ -549,7 +552,7 @@
                 </div>
                 <div class="hero-card hero-card-3">
                     <div class="doctor-card">
-                        <div class="doctor-avatar">👨‍⚕️</div>
+                        <div class="doctor-avatar"><img src="https://i.pravatar.cc/100?img=33" alt="Dr. Hassan Raza"></div>
                         <div class="doctor-info">
                             <div class="doctor-name">Dr. Hassan Raza</div>
                             <div class="doctor-spec">Neurologist</div>
@@ -598,12 +601,12 @@
             <p class="section-desc">We work with leading healthcare providers and labs to ensure you receive reliable care.</p>
         </div>
         <div class="partners-grid">
-            <div class="partner-card">Aga Khan University Hospital</div>
-            <div class="partner-card">Shaukat Khanum Memorial</div>
-            <div class="partner-card">Indus Hospital</div>
-            <div class="partner-card">Liaquat National Hospital</div>
-            <div class="partner-card">Chughtai Lab</div>
-            <div class="partner-card">SIUT</div>
+            <div class="partner-card"><img class="partner-logo" src="https://picsum.photos/seed/akuh/72/72" alt="Aga Khan University Hospital"><span>Aga Khan University Hospital</span></div>
+            <div class="partner-card"><img class="partner-logo" src="https://picsum.photos/seed/shk/72/72" alt="Shaukat Khanum Memorial"><span>Shaukat Khanum Memorial</span></div>
+            <div class="partner-card"><img class="partner-logo" src="https://picsum.photos/seed/indus/72/72" alt="Indus Hospital"><span>Indus Hospital</span></div>
+            <div class="partner-card"><img class="partner-logo" src="https://picsum.photos/seed/liaquat/72/72" alt="Liaquat National Hospital"><span>Liaquat National Hospital</span></div>
+            <div class="partner-card"><img class="partner-logo" src="https://picsum.photos/seed/chughtai/72/72" alt="Chughtai Lab"><span>Chughtai Lab</span></div>
+            <div class="partner-card"><img class="partner-logo" src="https://picsum.photos/seed/siut/72/72" alt="SIUT"><span>SIUT</span></div>
         </div>
     </section>
 
@@ -741,7 +744,7 @@
                 <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
                 <p class="testimonial-text">"I was able to consult a cardiologist within 15 minutes from my home in Multan. The video quality was excellent and the doctor was very professional. Saved me a 4-hour trip to Lahore!"</p>
                 <div class="testimonial-author">
-                    <div class="testimonial-avatar">👨</div>
+                    <div class="testimonial-avatar"><img src="https://i.pravatar.cc/100?img=15" alt="Muhammad Asif"></div>
                     <div>
                         <div class="testimonial-name">Muhammad Asif</div>
                         <div class="testimonial-role">Patient from Multan</div>
@@ -752,7 +755,7 @@
                 <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
                 <p class="testimonial-text">"As a working mother, finding time to visit a doctor was impossible. MediConnect's video consultations changed everything. I can now get medical advice during my lunch break!"</p>
                 <div class="testimonial-author">
-                    <div class="testimonial-avatar">👩</div>
+                    <div class="testimonial-avatar"><img src="https://i.pravatar.cc/100?img=24" alt="Fatima Zahra"></div>
                     <div>
                         <div class="testimonial-name">Fatima Zahra</div>
                         <div class="testimonial-role">Working Professional, Karachi</div>
@@ -763,7 +766,7 @@
                 <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
                 <p class="testimonial-text">"The symptom checker helped me identify that my headaches needed a neurologist, not just painkillers. Early diagnosis changed my life. Thank you MediConnect team!"</p>
                 <div class="testimonial-author">
-                    <div class="testimonial-avatar">👨</div>
+                    <div class="testimonial-avatar"><img src="https://i.pravatar.cc/100?img=56" alt="Ali Hassan"></div>
                     <div>
                         <div class="testimonial-name">Ali Hassan</div>
                         <div class="testimonial-role">Student, Islamabad</div>
