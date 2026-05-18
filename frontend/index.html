@@ -241,8 +241,16 @@
         .doctor-avatar-lg {
             width: 80px; height: 80px; border-radius: 50%; background: var(--bg-card);
             border: 4px solid var(--bg-card); position: absolute; bottom: -40px; left: 1.5rem;
-            display: flex; align-items: center; justify-content: center; font-size: 2rem;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem; overflow: hidden;
         }
+        .doctor-avatar-lg img { width: 100%; height: 100%; object-fit: cover; }
+        .doctor-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; overflow: hidden; }
+        .doctor-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .testimonial-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; overflow: hidden; }
+        .testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .partners { padding: 3rem 2rem; }
+        .partners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; max-width: 1200px; margin: 0 auto; }
+        .partner-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 1.25rem 1rem; text-align: center; font-weight: 600; color: var(--text); box-shadow: var(--shadow-sm); }
         .doctor-body { padding: 3rem 1.5rem 1.5rem; }
         .doctor-name-lg { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
         .doctor-spec-lg { color: var(--primary-light); font-size: 0.9rem; font-weight: 500; margin-bottom: 0.75rem; }
@@ -466,21 +474,19 @@
                     <span>Fingertips</span>
                 </h1>
                 <p class="hero-desc">
-                    Pakistan's most advanced healthcare platform. Book appointments, 
-                    consult online, get medicines delivered — all in one place. 
-                    Your health, simplified.
+                    Trusted by millions across Pakistan for fast doctor bookings, seamless virtual consultations, reliable medicine delivery, and secure health records.
                 </p>
                 <div class="hero-stats">
                     <div class="hero-stat">
-                        <div class="hero-stat-value">20K+</div>
+                        <div class="hero-stat-value">25K+</div>
                         <div class="hero-stat-label">Doctors</div>
                     </div>
                     <div class="hero-stat">
-                        <div class="hero-stat-value">10M+</div>
+                        <div class="hero-stat-value">1.2M+</div>
                         <div class="hero-stat-label">Patients</div>
                     </div>
                     <div class="hero-stat">
-                        <div class="hero-stat-value">50+</div>
+                        <div class="hero-stat-value">55+</div>
                         <div class="hero-stat-label">Cities</div>
                     </div>
                     <div class="hero-stat">
@@ -581,6 +587,23 @@
                     <i class="fas fa-search"></i> Search
                 </button>
             </div>
+        </div>
+    </section>
+
+    <!-- Trusted Partners -->
+    <section class="partners">
+        <div class="section-header">
+            <span class="section-label">Trusted Partners</span>
+            <h2 class="section-title">Partner Hospitals & Clinics</h2>
+            <p class="section-desc">We work with leading healthcare providers and labs to ensure you receive reliable care.</p>
+        </div>
+        <div class="partners-grid">
+            <div class="partner-card">Aga Khan University Hospital</div>
+            <div class="partner-card">Shaukat Khanum Memorial</div>
+            <div class="partner-card">Indus Hospital</div>
+            <div class="partner-card">Liaquat National Hospital</div>
+            <div class="partner-card">Chughtai Lab</div>
+            <div class="partner-card">SIUT</div>
         </div>
     </section>
 
@@ -1026,12 +1049,12 @@
         ];
 
         var doctors = [
-            { id: 1, name: 'Dr. Ahmed Khan', specialty: 'Cardiologist', city: 'Lahore', exp: 18, rating: 4.9, reviews: 342, fee: 2500, online: true, image: '👨', about: 'Senior Cardiologist at Shaukat Khanum Hospital. Specializes in interventional cardiology and heart failure management.' },
-            { id: 2, name: 'Dr. Sarah Ali', specialty: 'Dermatologist', city: 'Karachi', exp: 12, rating: 4.8, reviews: 528, fee: 2000, online: true, image: '👩', about: 'Expert in cosmetic dermatology, acne treatment, and laser procedures. Former consultant at Aga Khan University Hospital.' },
-            { id: 3, name: 'Dr. Usman Farooq', specialty: 'Orthopedic', city: 'Islamabad', exp: 15, rating: 4.7, reviews: 289, fee: 3000, online: false, image: '👨', about: 'Joint replacement specialist with expertise in minimally invasive arthroscopic surgery. 15+ years experience.' },
-            { id: 4, name: 'Dr. Ayesha Malik', specialty: 'Gynecologist', city: 'Lahore', exp: 14, rating: 4.9, reviews: 612, fee: 2200, online: true, image: '👩', about: 'High-risk pregnancy specialist and fertility expert. Dedicated to women\'s health and reproductive medicine.' },
-            { id: 5, name: 'Dr. Hassan Raza', specialty: 'Neurologist', city: 'Karachi', exp: 20, rating: 4.8, reviews: 198, fee: 3500, online: true, image: '👨', about: 'Neurology expert specializing in stroke management, epilepsy, and movement disorders. Published researcher.' },
-            { id: 6, name: 'Dr. Maria Iqbal', specialty: 'Pediatrician', city: 'Rawalpindi', exp: 10, rating: 4.9, reviews: 445, fee: 1800, online: true, image: '👩', about: 'Child health specialist with focus on developmental pediatrics and childhood nutrition. Loved by young patients!' }
+            { id: 1, name: 'Dr. Ahmed Khan', specialty: 'Cardiologist', city: 'Lahore', exp: 18, rating: 4.9, reviews: 342, fee: 2500, online: true, image: 'https://i.pravatar.cc/200?img=32', about: 'Senior Cardiologist at Shaukat Khanum Hospital. Specializes in interventional cardiology and heart failure management.' },
+            { id: 2, name: 'Dr. Sarah Ali', specialty: 'Dermatologist', city: 'Karachi', exp: 12, rating: 4.8, reviews: 528, fee: 2000, online: true, image: 'https://i.pravatar.cc/200?img=47', about: 'Expert in cosmetic dermatology, acne treatment, and laser procedures. Former consultant at Aga Khan University Hospital.' },
+            { id: 3, name: 'Dr. Usman Farooq', specialty: 'Orthopedic', city: 'Islamabad', exp: 15, rating: 4.7, reviews: 289, fee: 3000, online: false, image: 'https://i.pravatar.cc/200?img=52', about: 'Joint replacement specialist with expertise in minimally invasive arthroscopic surgery. 15+ years experience.' },
+            { id: 4, name: 'Dr. Ayesha Malik', specialty: 'Gynecologist', city: 'Lahore', exp: 14, rating: 4.9, reviews: 612, fee: 2200, online: true, image: 'https://i.pravatar.cc/200?img=12', about: 'High-risk pregnancy specialist and fertility expert. Dedicated to women\'s health and reproductive medicine.' },
+            { id: 5, name: 'Dr. Hassan Raza', specialty: 'Neurologist', city: 'Karachi', exp: 20, rating: 4.8, reviews: 198, fee: 3500, online: true, image: 'https://i.pravatar.cc/200?img=33', about: 'Neurology expert specializing in stroke management, epilepsy, and movement disorders. Published researcher.' },
+            { id: 6, name: 'Dr. Maria Iqbal', specialty: 'Pediatrician', city: 'Rawalpindi', exp: 10, rating: 4.9, reviews: 445, fee: 1800, online: true, image: 'https://i.pravatar.cc/200?img=25', about: 'Child health specialist with focus on developmental pediatrics and childhood nutrition. Loved by young patients!' }
         ];
 
         var symptoms = [
@@ -1107,13 +1130,17 @@
             }).join('');
         }
 
+        function getAvatarHtml(image) {
+            if (!image) return '👨';
+            return image.startsWith('http') ? '<img src="' + image + '" alt="Doctor photo">' : image;
+        }
+
         function renderDoctors() {
             var grid = document.getElementById('doctorsGrid');
             grid.innerHTML = doctors.map(function(d) {
-                var stars = '⭐'.repeat(Math.floor(d.rating)) + (d.rating % 1 >= 0.5 ? '⭐' : '');
                 return '<div class="doctor-profile" onclick="openBooking(' + d.id + ')">' +
                     '<div class="doctor-cover"></div>' +
-                    '<div class="doctor-avatar-lg">' + d.image + '</div>' +
+                    '<div class="doctor-avatar-lg">' + getAvatarHtml(d.image) + '</div>' +
                     '<div class="doctor-body">' +
                         '<div class="doctor-name-lg">' + d.name + '</div>' +
                         '<div class="doctor-spec-lg">' + d.specialty + '</div>' +
@@ -1131,7 +1158,7 @@
                             '<button class="btn-book" onclick="event.stopPropagation(); openBooking(' + d.id + ')">' +
                                 '<i class="fas fa-calendar-check"></i> Book Now' +
                             '</button>' +
-                            '<button class="btn-video" onclick="event.stopPropagation(); showToast("Video call feature coming soon!", "success")">' +
+                            '<button class="btn-video" onclick="event.stopPropagation(); showToast(\'Video call feature coming soon!\', \'success\')">' +
                                 '<i class="fas fa-video"></i>' +
                             '</button>' +
                         '</div>' +
@@ -1192,7 +1219,7 @@
                 html += '<div style="margin-bottom: 1rem;"><h4 style="font-size: 1.1rem; margin-bottom: 0.75rem;">👨‍⚕️ Available Doctors</h4></div>';
                 html += matchingDoctors.map(function(d) {
                     return '<div class="result-doctor" onclick="openBooking(' + d.id + ')">' +
-                        '<div class="doctor-avatar">' + d.image + '</div>' +
+                        '<div class="doctor-avatar">' + getAvatarHtml(d.image) + '</div>' +
                         '<div style="flex: 1;">' +
                             '<div style="font-weight: 600;">' + d.name + '</div>' +
                             '<div style="font-size: 0.8rem; color: var(--text-muted);">' + d.specialty + ' • ' + d.city + ' • ' + d.exp + ' yrs exp</div>' +
@@ -1216,7 +1243,7 @@
             if (!currentDoctor) return;
             var info = document.getElementById('bookingDoctorInfo');
             info.innerHTML = '<div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg); border-radius: 12px; margin-bottom: 1.5rem;">' +
-                '<div style="font-size: 2.5rem;">' + currentDoctor.image + '</div>' +
+                '<div class="doctor-avatar" style="width: 56px; height: 56px;">' + getAvatarHtml(currentDoctor.image) + '</div>' +
                 '<div>' +
                     '<div style="font-weight: 700; font-size: 1.1rem;">' + currentDoctor.name + '</div>' +
                     '<div style="color: var(--primary-light); font-weight: 500;">' + currentDoctor.specialty + '</div>' +
